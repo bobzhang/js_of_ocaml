@@ -363,7 +363,7 @@ let print_block annot pc block =
     print_last block.branch;
   Format.eprintf "@."
 
-let print_program annot (pc, blocks, _) =
+let print_program (annot : AddrMap.key -> xinstr -> string) ((pc, blocks, _) : program) =
   Format.eprintf "Entry point: %d@.@." pc;
   AddrMap.iter (print_block annot) blocks
 
@@ -380,7 +380,7 @@ let fold_closures (pc, blocks, _) f accu =
             | _ ->
                 accu)
          accu block.body)
-    blocks (f None [] (pc, []) accu)
+    blocks (    f None [] (pc, []) accu)
 
 (****)
 

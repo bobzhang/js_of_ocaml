@@ -17,7 +17,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  *)
 
-open Util
+(* open Util *)
 
 type t = {
   names : (int,string) Hashtbl.t;
@@ -30,14 +30,14 @@ type t = {
 let c1 = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_$"
 let c2 = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_$"
 
-let name_raw t v nm = Hashtbl.add t.names v nm
-let propagate_name t v v' =
+let name_raw (t : t) (v : int) (nm : string) = Hashtbl.add t.names v nm
+let propagate_name t (v : int) (v' : int) =
   try name_raw t v' (Hashtbl.find t.names v) with Not_found -> ()
 
 let is_alpha c = (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')
 let is_num c = (c >= '0' && c <= '9')
 
-let name t v nm_orig =
+let name t v (nm_orig : string) : unit =
   let len = String.length nm_orig in
   if len > 0 then begin
     let buf = Buffer.create (String.length nm_orig) in
@@ -63,7 +63,7 @@ let name t v nm_orig =
     then name_raw t v str
   end
 
-let rec format_ident x =
+let rec format_ident (x : int) : string =
   assert (x >= 0);
   let char c x = String.make 1 (c.[x]) in
   if x < 54 then
@@ -77,18 +77,18 @@ let format_var t _i x =
   then Format.sprintf "_%s_" s
   else s
 
-let reserved = ref StringSet.empty
+let reserved = ref Util.StringSet.empty
 
 let add_reserved s = reserved := List.fold_left (fun acc x ->
-    StringSet.add x acc) !reserved s
+    Util.StringSet.add x acc) !reserved s
 
 
-let _ = reserved := StringSet.union !reserved Reserved.keyword(* ; *)
+let _ = reserved := Util.StringSet.union !reserved Reserved.keyword(* ; *)
 (* add_reserved Reserved.provided *)
 
 let get_reserved () = !reserved
 
-let is_reserved s = StringSet.mem s !reserved
+let is_reserved s = Util.StringSet.mem s !reserved
 
 let rec to_string t ?origin i =
   let origin = match origin with

@@ -28,8 +28,8 @@ OBJS=compiler_version.cmx myfindlib.cmx \
      pseudoFs.cmx
 
 COMPOBJS=$(OBJS) commonArg.cmx compileArg.cmx compile.cmx
-OCAMLC=ocamlfind ocamlc     -w +A-4-7-9-37-38-41-44-45
-OCAMLOPT=ocamlfind ocamlopt -w +A-4-7-9-37-38-41-44-45
+OCAMLC=ocamlfind ocamlc   -annot -w +A-4-7-9-37-38-41-44-45-40-42
+OCAMLOPT=ocamlfind ocamlopt -w +A-4-7-9-37-38-41-44-45-40-42
 $(COMPILER): compile.$(BEST)
 	mv -f $< $@
 

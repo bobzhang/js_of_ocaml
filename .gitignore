@@ -75,3 +75,8 @@ doc/manual/files/toplevel/
 doc/manual/files/webgl/
 doc/manual/files/wiki/
 doc/manual/files/wysiwyg/
+
+*.annot
+compiler/*.js
+
+*.compile
